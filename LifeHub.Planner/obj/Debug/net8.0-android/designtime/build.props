@@ -27,5 +27,5 @@ androidpackagenamingpolicy=lowercasecrc64
 _nugetassetsfilehash=a9081e5d34ef8fccf8a71f89fecf70553088b891c5066a874ef8a2447e78e2e9
 typemapkind=strings-asm
 androidmanifestplaceholders=
-projectfullpath=c:\users\lenovo\source\repos\win_prog\lifehub.planner\lifehub.planner.csproj
+projectfullpath=c:\users\lenovo\source\repos\lifehub\lifehub.planner\lifehub.planner.csproj
 androidusedesignerassembly=true

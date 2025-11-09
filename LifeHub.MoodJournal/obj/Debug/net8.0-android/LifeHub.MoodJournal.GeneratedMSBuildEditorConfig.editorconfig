@@ -12,37 +12,37 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LifeHub.MoodJournal
-build_property.ProjectDir = c:\Users\lenovo\source\repos\win_prog\LifeHub.MoodJournal\
+build_property.ProjectDir = c:\Users\lenovo\source\repos\LifeHub\LifeHub.MoodJournal\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[c:/Users/lenovo/source/repos/win_prog/LifeHub.MoodJournal/App.xaml]
+[c:/Users/lenovo/source/repos/LifeHub/LifeHub.MoodJournal/App.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = LifeHub.MoodJournal.App.xaml
 build_metadata.AdditionalFiles.TargetPath = App.xaml
 build_metadata.AdditionalFiles.RelativePath = App.xaml
 
-[c:/Users/lenovo/source/repos/win_prog/LifeHub.MoodJournal/AppShell.xaml]
+[c:/Users/lenovo/source/repos/LifeHub/LifeHub.MoodJournal/AppShell.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = LifeHub.MoodJournal.AppShell.xaml
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[c:/Users/lenovo/source/repos/win_prog/LifeHub.MoodJournal/MainPage.xaml]
+[c:/Users/lenovo/source/repos/LifeHub/LifeHub.MoodJournal/MainPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = LifeHub.MoodJournal.MainPage.xaml
 build_metadata.AdditionalFiles.TargetPath = MainPage.xaml
 build_metadata.AdditionalFiles.RelativePath = MainPage.xaml
 
-[c:/Users/lenovo/source/repos/win_prog/LifeHub.MoodJournal/Resources/Styles/Colors.xaml]
+[c:/Users/lenovo/source/repos/LifeHub/LifeHub.MoodJournal/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = LifeHub.MoodJournal.Resources.Styles.Colors.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
 
-[c:/Users/lenovo/source/repos/win_prog/LifeHub.MoodJournal/Resources/Styles/Styles.xaml]
+[c:/Users/lenovo/source/repos/LifeHub/LifeHub.MoodJournal/Resources/Styles/Styles.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = LifeHub.MoodJournal.Resources.Styles.Styles.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml

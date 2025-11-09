@@ -27,5 +27,5 @@ androidpackagenamingpolicy=lowercasecrc64
 _nugetassetsfilehash=07d05099aa4e46331c0b238b70ea25482af86b6a07ac7ef2e3cd625a36bc7423
 typemapkind=strings-asm
 androidmanifestplaceholders=
-projectfullpath=c:\users\lenovo\source\repos\win_prog\lifehub.dashboard\lifehub.dashboard.csproj
+projectfullpath=c:\users\lenovo\source\repos\lifehub\lifehub.dashboard\lifehub.dashboard.csproj
 androidusedesignerassembly=true

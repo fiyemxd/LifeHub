@@ -27,5 +27,5 @@ androidpackagenamingpolicy=lowercasecrc64
 _nugetassetsfilehash=e294f31c2f0ff6903df1a2fb7e6d932873f988bdb845db4a9a07faf673ae1579
 typemapkind=strings-asm
 androidmanifestplaceholders=
-projectfullpath=c:\users\lenovo\source\repos\win_prog\lifehub.habittracker\lifehub.habittracker.csproj
+projectfullpath=c:\users\lenovo\source\repos\lifehub\lifehub.habittracker\lifehub.habittracker.csproj
 androidusedesignerassembly=true

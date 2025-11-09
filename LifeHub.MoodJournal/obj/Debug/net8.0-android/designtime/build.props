@@ -27,5 +27,5 @@ androidpackagenamingpolicy=lowercasecrc64
 _nugetassetsfilehash=e0fac3a5566c63bbca2716f5c0e6f56f41022e6d7955d02ab48d0fc79f2b4bf9
 typemapkind=strings-asm
 androidmanifestplaceholders=
-projectfullpath=c:\users\lenovo\source\repos\win_prog\lifehub.moodjournal\lifehub.moodjournal.csproj
+projectfullpath=c:\users\lenovo\source\repos\lifehub\lifehub.moodjournal\lifehub.moodjournal.csproj
 androidusedesignerassembly=true
