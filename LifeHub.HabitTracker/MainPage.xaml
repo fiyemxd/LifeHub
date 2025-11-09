@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LifeHub.HabitTracker.MainPage"
+             Title="Alışkanlık Takibi">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header - Aesthetic-Usability Effect -->
+            <VerticalStackLayout Spacing="10" Margin="0,10,0,20">
+                <Label 
+                    Text="📊 Alışkanlık Takibi"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    TextColor="#4CAF50"
+                    HorizontalOptions="Center"
+                    SemanticProperties.HeadingLevel="Level1" />
+                <Label 
+                    Text="Günlük alışkanlıklarınızı takip edin ve gelişiminizi görün"
+                    FontSize="14"
+                    TextColor="#666"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    SemanticProperties.HeadingLevel="Level2" />
+            </VerticalStackLayout>
+
+            <!-- Add Habit Section - Fitts's Law (Large input area) -->
+            <Border 
+                BackgroundColor="#E8F5E9"
+                Stroke="#4CAF50"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 15,15,15,15"
+                Padding="15"
+                Margin="0,0,0,10">
+                <VerticalStackLayout Spacing="15">
+                    <Label 
+                        Text="Yeni Alışkanlık Ekle"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#2E7D32"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    
+                    <Entry 
+                        x:Name="HabitNameEntry"
+                        Placeholder="Alışkanlık adı (örn: Su içmek, Egzersiz)"
+                        PlaceholderColor="#999"
+                        BackgroundColor="White"
+                        TextColor="#333"
+                        FontSize="16"
+                        HeightRequest="50"
+                        Margin="0,0,0,5" />
+                    
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button 
+                            Grid.Column="0"
+                            Text="Ekle"
+                            BackgroundColor="#4CAF50"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Command="{Binding AddHabitCommand}"
+                            SemanticProperties.Hint="Yeni alışkanlık ekler" />
+                        <Button 
+                            Grid.Column="1"
+                            Text="Temizle"
+                            BackgroundColor="#81C784"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Clicked="OnClearEntryClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Habits List - Miller's Law (Show last 7 items) -->
+            <VerticalStackLayout Spacing="15">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label 
+                        Grid.Column="0"
+                        Text="Alışkanlıklarım (Son 7)"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Button 
+                        Grid.Column="1"
+                        Text="Sıfırla"
+                        BackgroundColor="#F44336"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="15,8"
+                        Command="{Binding ResetAllCommand}"
+                        SemanticProperties.Hint="Tüm alışkanlıkları sıfırlar" />
+                </Grid>
+
+                <CollectionView 
+                    x:Name="HabitsCollection"
+                    ItemsSource="{Binding Habits}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                                BackgroundColor="White"
+                                Stroke="#E0E0E0"
+                                StrokeThickness="2"
+                                StrokeShape="RoundRectangle 12,12,12,12"
+                                Padding="15"
+                                Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto">
+                                    <!-- CheckBox - Von Restorff Effect (Standout element) -->
+                                    <CheckBox 
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        IsChecked="{Binding IsCompleted}"
+                                        Color="#4CAF50"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,15,0"
+                                        CheckedChanged="OnHabitCheckedChanged" />
+                                    
+                                    <!-- Habit Info -->
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5">
+                                        <Label 
+                                            Text="{Binding Name}"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            TextColor="{Binding TextColor}"
+                                            TextDecorations="{Binding TextDecoration}" />
+                                        <Label 
+                                            Text="{Binding Timestamp, StringFormat='Eklenme: {0:dd MMM yyyy HH:mm}'}"
+                                            FontSize="12"
+                                            TextColor="#999" />
+                                        <Label 
+                                            Text="{Binding CompletionInfo}"
+                                            FontSize="12"
+                                            TextColor="#4CAF50"
+                                            IsVisible="{Binding IsCompleted}" />
+                                    </VerticalStackLayout>
+                                    
+                                    <!-- Delete Button - Fitts's Law (Adequate size) -->
+                                    <Button 
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Text="🗑️"
+                                        BackgroundColor="Transparent"
+                                        FontSize="20"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteHabitCommand}"
+                                        CommandParameter="{Binding .}"
+                                        SemanticProperties.Hint="Alışkanlığı sil" />
+                                    
+                                    <!-- Streak Indicator - Gestalt Principles (Visual grouping) -->
+                                    <Border 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="4"
+                                        BackgroundColor="#FFF9C4"
+                                        Stroke="#FDD835"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 8,8,8,8"
+                                        Padding="10"
+                                        Margin="0,10,0,0"
+                                        IsVisible="{Binding HasStreak}">
+                                        <Label 
+                                            Text="{Binding StreakText}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            TextColor="#F57F17"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout 
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="20"
+                            Margin="0,50">
+                            <Label 
+                                Text="📝"
+                                FontSize="60"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Henüz alışkanlık eklenmedi"
+                                FontSize="16"
+                                TextColor="#999"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Yukarıdan yeni alışkanlık ekleyebilirsiniz"
+                                FontSize="14"
+                                TextColor="#BBB"
+                                HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Statistics Section - Doherty Threshold (Immediate feedback) -->
+            <Border 
+                BackgroundColor="#F5F5F5"
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12,12,12,12"
+                Padding="15"
+                Margin="0,20,0,0">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="📈 İstatistikler"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+                        <Border 
+                            Grid.Row="0" Grid.Column="0"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding TotalHabits, StringFormat='Toplam: {0}'}"
+                                FontSize="14"
+                                TextColor="#333"
+                                HorizontalOptions="Center" />
+                        </Border>
+                        <Border 
+                            Grid.Row="0" Grid.Column="1"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding CompletedHabits, StringFormat='Tamamlanan: {0}'}"
+                                FontSize="14"
+                                TextColor="#4CAF50"
+                                HorizontalOptions="Center" />
+                        </Border>
+                        <Border 
+                            Grid.Row="1" Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding CompletionRate, StringFormat='Tamamlanma Oranı: {0}%'}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                TextColor="#2E7D32"
+                                HorizontalOptions="Center" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

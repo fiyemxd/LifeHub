@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LifeHub.Dashboard.MainPage"
+             Title="LifeHub Dashboard">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header Section - Aesthetic-Usability Effect -->
+            <VerticalStackLayout Spacing="10" Margin="0,10,0,20">
+                <Label 
+                    Text="LifeHub"
+                    FontSize="42"
+                    FontAttributes="Bold"
+                    TextColor="#512BD4"
+                    HorizontalOptions="Center"
+                    SemanticProperties.HeadingLevel="Level1" />
+                <Label 
+                    Text="Kişisel Verimlilik ve Wellness Platformu"
+                    FontSize="18"
+                    TextColor="#666"
+                    HorizontalOptions="Center"
+                    SemanticProperties.HeadingLevel="Level2" />
+            </VerticalStackLayout>
+
+            <!-- App Cards Grid - Gestalt Principles (Proximity & Similarity) -->
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" ColumnSpacing="15" RowSpacing="15">
+                
+                <!-- Habit Tracker Card - Fitts's Law (Large touch targets) -->
+                <Border 
+                    Grid.Row="0" 
+                    Grid.Column="0"
+                    BackgroundColor="#E8F5E9"
+                    Stroke="#4CAF50"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 15,15,15,15"
+                    Padding="15"
+                    Margin="0,0,0,0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnHabitTrackerTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="10">
+                        <Label 
+                            Text="📊"
+                            FontSize="40"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Text="Alışkanlık Takibi"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#2E7D32" />
+                        <Label 
+                            Text="Günlük alışkanlıklarınızı takip edin"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            TextColor="#555"
+                            TextType="Html" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Mood Journal Card -->
+                <Border 
+                    Grid.Row="0" 
+                    Grid.Column="1"
+                    BackgroundColor="#FFF3E0"
+                    Stroke="#FF9800"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 15,15,15,15"
+                    Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMoodJournalTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="10">
+                        <Label 
+                            Text="😊"
+                            FontSize="40"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Text="Ruh Hali Günlüğü"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#E65100" />
+                        <Label 
+                            Text="Günlük ruh halinizi kaydedin"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            TextColor="#555"
+                            TextType="Html" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Planner Card -->
+                <Border 
+                    Grid.Row="1" 
+                    Grid.Column="0"
+                    BackgroundColor="#E3F2FD"
+                    Stroke="#2196F3"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 15,15,15,15"
+                    Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPlannerTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="10">
+                        <Label 
+                            Text="📅"
+                            FontSize="40"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Text="Günlük Planlayıcı"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#1565C0" />
+                        <Label 
+                            Text="Görevlerinizi planlayın"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            TextColor="#555"
+                            TextType="Html" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Stats Card -->
+                <Border 
+                    Grid.Row="1" 
+                    Grid.Column="1"
+                    BackgroundColor="#F3E5F5"
+                    Stroke="#9C27B0"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 15,15,15,15"
+                    Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label 
+                            Text="📈"
+                            FontSize="40"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Text="İstatistikler"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#6A1B9A" />
+                        <Label 
+                            Text="Genel bakış"
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            TextColor="#555"
+                            TextType="Html" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Recent Activity Section - Miller's Law (7±2 items) -->
+            <VerticalStackLayout Spacing="15" Margin="0,20,0,0">
+                <Label 
+                    Text="Son Aktiviteler"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    TextColor="#333"
+                    SemanticProperties.HeadingLevel="Level3" />
+                
+                <CollectionView 
+                    x:Name="RecentActivitiesCollection"
+                    ItemsSource="{Binding RecentActivities}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                                BackgroundColor="#F5F5F5"
+                                Stroke="#E0E0E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10,10,10,10"
+                                Padding="15"
+                                Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Label 
+                                        Grid.Column="0"
+                                        Text="{Binding Icon}"
+                                        FontSize="24"
+                                        VerticalOptions="Center" />
+                                    <VerticalStackLayout Grid.Column="1" Spacing="5" Margin="10,0">
+                                        <Label 
+                                            Text="{Binding Title}"
+                                            FontSize="14"
+                                            FontAttributes="Bold"
+                                            TextColor="#333" />
+                                        <Label 
+                                            Text="{Binding Description}"
+                                            FontSize="12"
+                                            TextColor="#666" />
+                                    </VerticalStackLayout>
+                                    <Label 
+                                        Grid.Column="2"
+                                        Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
+                                        FontSize="12"
+                                        TextColor="#999"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Quick Actions - Hick's Law (Limited choices) -->
+            <VerticalStackLayout Spacing="10" Margin="0,20,0,0">
+                <Label 
+                    Text="Hızlı İşlemler"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    TextColor="#333"
+                    SemanticProperties.HeadingLevel="Level3" />
+                
+                <Button 
+                    Text="Tümünü Temizle"
+                    BackgroundColor="#F44336"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Command="{Binding ClearAllCommand}"
+                    SemanticProperties.Hint="Tüm aktiviteleri temizler" />
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

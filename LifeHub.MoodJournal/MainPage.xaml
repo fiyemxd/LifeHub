@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LifeHub.MoodJournal.MainPage"
+             Title="Ruh Hali Günlüğü">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header - Aesthetic-Usability Effect -->
+            <VerticalStackLayout Spacing="10" Margin="0,10,0,20">
+                <Label 
+                    Text="😊 Ruh Hali Günlüğü"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    TextColor="#FF9800"
+                    HorizontalOptions="Center"
+                    SemanticProperties.HeadingLevel="Level1" />
+                <Label 
+                    Text="Günlük ruh halinizi kaydedin ve duygusal gelişiminizi takip edin"
+                    FontSize="14"
+                    TextColor="#666"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    SemanticProperties.HeadingLevel="Level2" />
+            </VerticalStackLayout>
+
+            <!-- Add Mood Section - Hick's Law (Limited choices) -->
+            <Border 
+                BackgroundColor="#FFF3E0"
+                Stroke="#FF9800"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 15,15,15,15"
+                Padding="15"
+                Margin="0,0,0,10">
+                <VerticalStackLayout Spacing="15">
+                    <Label 
+                        Text="Bugün Nasıl Hissediyorsunuz?"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#E65100"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    
+                    <!-- Mood Selection - Fitts's Law (Large buttons) -->
+                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*,*,*" ColumnSpacing="10" RowSpacing="10">
+                        <Button 
+                            Grid.Row="0" Grid.Column="0"
+                            Text="😄"
+                            FontSize="32"
+                            BackgroundColor="#E8F5E9"
+                            TextColor="#4CAF50"
+                            CornerRadius="15"
+                            HeightRequest="70"
+                            Command="{Binding AddMoodCommand}"
+                            CommandParameter="Çok İyi"
+                            SemanticProperties.Hint="Çok iyi ruh hali" />
+                        <Button 
+                            Grid.Row="0" Grid.Column="1"
+                            Text="🙂"
+                            FontSize="32"
+                            BackgroundColor="#E1F5FE"
+                            TextColor="#03A9F4"
+                            CornerRadius="15"
+                            HeightRequest="70"
+                            Command="{Binding AddMoodCommand}"
+                            CommandParameter="İyi"
+                            SemanticProperties.Hint="İyi ruh hali" />
+                        <Button 
+                            Grid.Row="0" Grid.Column="2"
+                            Text="😐"
+                            FontSize="32"
+                            BackgroundColor="#FFF9C4"
+                            TextColor="#FBC02D"
+                            CornerRadius="15"
+                            HeightRequest="70"
+                            Command="{Binding AddMoodCommand}"
+                            CommandParameter="Normal"
+                            SemanticProperties.Hint="Normal ruh hali" />
+                        <Button 
+                            Grid.Row="0" Grid.Column="3"
+                            Text="😔"
+                            FontSize="32"
+                            BackgroundColor="#FFE0B2"
+                            TextColor="#FF9800"
+                            CornerRadius="15"
+                            HeightRequest="70"
+                            Command="{Binding AddMoodCommand}"
+                            CommandParameter="Kötü"
+                            SemanticProperties.Hint="Kötü ruh hali" />
+                        
+                        <Label 
+                            Grid.Row="1" Grid.Column="0"
+                            Text="Çok İyi"
+                            FontSize="10"
+                            TextColor="#666"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Grid.Row="1" Grid.Column="1"
+                            Text="İyi"
+                            FontSize="10"
+                            TextColor="#666"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Grid.Row="1" Grid.Column="2"
+                            Text="Normal"
+                            FontSize="10"
+                            TextColor="#666"
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Grid.Row="1" Grid.Column="3"
+                            Text="Kötü"
+                            FontSize="10"
+                            TextColor="#666"
+                            HorizontalOptions="Center" />
+                    </Grid>
+
+                    <!-- Note Entry - Tesler's Law (Shift complexity) -->
+                    <Entry 
+                        x:Name="MoodNoteEntry"
+                        Placeholder="Not ekleyin (isteğe bağlı)..."
+                        PlaceholderColor="#999"
+                        BackgroundColor="White"
+                        TextColor="#333"
+                        FontSize="14"
+                        HeightRequest="80"
+                        Margin="0,5,0,0" />
+                    
+                    <Button 
+                        Text="Kaydet"
+                        BackgroundColor="#FF9800"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Command="{Binding SaveMoodCommand}"
+                        SemanticProperties.Hint="Ruh halini kaydet" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Mood History - Miller's Law (Show last 7 items) -->
+            <VerticalStackLayout Spacing="15">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label 
+                        Grid.Column="0"
+                        Text="Ruh Hali Geçmişi (Son 7)"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Button 
+                        Grid.Column="1"
+                        Text="Temizle"
+                        BackgroundColor="#F44336"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="15,8"
+                        Command="{Binding ClearAllCommand}"
+                        SemanticProperties.Hint="Tüm kayıtları temizler" />
+                </Grid>
+
+                <CollectionView 
+                    x:Name="MoodsCollection"
+                    ItemsSource="{Binding Moods}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                                BackgroundColor="White"
+                                Stroke="#E0E0E0"
+                                StrokeThickness="2"
+                                StrokeShape="RoundRectangle 12,12,12,12"
+                                Padding="15"
+                                Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+                                    <!-- Mood Icon - Von Restorff Effect -->
+                                    <Border 
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        BackgroundColor="{Binding MoodColor}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 25,25,25,25"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,15,0">
+                                        <Label 
+                                            Text="{Binding MoodIcon}"
+                                            FontSize="28"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    
+                                    <!-- Mood Info -->
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5">
+                                        <Label 
+                                            Text="{Binding MoodType}"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            TextColor="#333" />
+                                        <Label 
+                                            Text="{Binding Timestamp, StringFormat='{0:dd MMMM yyyy, HH:mm}'}"
+                                            FontSize="12"
+                                            TextColor="#999" />
+                                        <Label 
+                                            Text="{Binding Note}"
+                                            FontSize="13"
+                                            TextColor="#666"
+                                            IsVisible="{Binding HasNote}"
+                                            LineBreakMode="WordWrap" />
+                                    </VerticalStackLayout>
+                                    
+                                    <!-- Delete Button - Fitts's Law -->
+                                    <Button 
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Text="🗑️"
+                                        BackgroundColor="Transparent"
+                                        FontSize="20"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMoodCommand}"
+                                        CommandParameter="{Binding .}"
+                                        SemanticProperties.Hint="Ruh halini sil" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout 
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="20"
+                            Margin="0,50">
+                            <Label 
+                                Text="📝"
+                                FontSize="60"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Henüz ruh hali kaydı yok"
+                                FontSize="16"
+                                TextColor="#999"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Yukarıdan ruh halinizi kaydedebilirsiniz"
+                                FontSize="14"
+                                TextColor="#BBB"
+                                HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Mood Statistics - Doherty Threshold (Immediate feedback) -->
+            <Border 
+                BackgroundColor="#F5F5F5"
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12,12,12,12"
+                Padding="15"
+                Margin="0,20,0,0">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="📊 Ruh Hali İstatistikleri"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Label 
+                        Text="{Binding AverageMood, StringFormat='Ortalama Ruh Hali: {0}'}"
+                        FontSize="14"
+                        TextColor="#333"
+                        HorizontalOptions="Center" />
+                    <Label 
+                        Text="{Binding TotalMoods, StringFormat='Toplam Kayıt: {0}'}"
+                        FontSize="14"
+                        TextColor="#666"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

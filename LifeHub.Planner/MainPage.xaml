@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LifeHub.Planner.MainPage"
+             Title="Günlük Planlayıcı">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header - Aesthetic-Usability Effect -->
+            <VerticalStackLayout Spacing="10" Margin="0,10,0,20">
+                <Label 
+                    Text="📅 Günlük Planlayıcı"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    TextColor="#2196F3"
+                    HorizontalOptions="Center"
+                    SemanticProperties.HeadingLevel="Level1" />
+                <Label 
+                    Text="Görevlerinizi planlayın ve gününüzü organize edin"
+                    FontSize="14"
+                    TextColor="#666"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    SemanticProperties.HeadingLevel="Level2" />
+            </VerticalStackLayout>
+
+            <!-- Add Task Section - Fitts's Law (Large input area) -->
+            <Border 
+                BackgroundColor="#E3F2FD"
+                Stroke="#2196F3"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 15,15,15,15"
+                Padding="15"
+                Margin="0,0,0,10">
+                <VerticalStackLayout Spacing="15">
+                    <Label 
+                        Text="Yeni Görev Ekle"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#1565C0"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    
+                    <Entry 
+                        x:Name="TaskTitleEntry"
+                        Placeholder="Görev başlığı"
+                        PlaceholderColor="#999"
+                        BackgroundColor="White"
+                        TextColor="#333"
+                        FontSize="16"
+                        HeightRequest="50"
+                        Margin="0,0,0,5" />
+                    
+                    <Entry 
+                        x:Name="TaskDescriptionEntry"
+                        Placeholder="Açıklama (isteğe bağlı)"
+                        PlaceholderColor="#999"
+                        BackgroundColor="White"
+                        TextColor="#333"
+                        FontSize="14"
+                        HeightRequest="60"
+                        Margin="0,0,0,5" />
+                    
+                    <!-- Priority Selection - Hick's Law (Limited choices) -->
+                    <Grid ColumnDefinitions="Auto,*,*,*" ColumnSpacing="10">
+                        <Label 
+                            Grid.Column="0"
+                            Text="Öncelik:"
+                            FontSize="14"
+                            TextColor="#333"
+                            VerticalOptions="Center" />
+                        <Button 
+                            Grid.Column="1"
+                            Text="Yüksek"
+                            BackgroundColor="#F44336"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            Command="{Binding SetPriorityCommand}"
+                            CommandParameter="Yüksek"
+                            SemanticProperties.Hint="Yüksek öncelik" />
+                        <Button 
+                            Grid.Column="2"
+                            Text="Orta"
+                            BackgroundColor="#FF9800"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            Command="{Binding SetPriorityCommand}"
+                            CommandParameter="Orta"
+                            SemanticProperties.Hint="Orta öncelik" />
+                        <Button 
+                            Grid.Column="3"
+                            Text="Düşük"
+                            BackgroundColor="#4CAF50"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            Command="{Binding SetPriorityCommand}"
+                            CommandParameter="Düşük"
+                            SemanticProperties.Hint="Düşük öncelik" />
+                    </Grid>
+                    
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button 
+                            Grid.Column="0"
+                            Text="Ekle"
+                            BackgroundColor="#2196F3"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Command="{Binding AddTaskCommand}"
+                            SemanticProperties.Hint="Yeni görev ekler" />
+                        <Button 
+                            Grid.Column="1"
+                            Text="Temizle"
+                            BackgroundColor="#64B5F6"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Clicked="OnClearEntriesClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Tasks List - Miller's Law (Show last 7 items) -->
+            <VerticalStackLayout Spacing="15">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label 
+                        Grid.Column="0"
+                        Text="Görevlerim (Son 7)"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Button 
+                        Grid.Column="1"
+                        Text="Tamamlananları Temizle"
+                        BackgroundColor="#F44336"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="15,8"
+                        Command="{Binding ClearCompletedCommand}"
+                        SemanticProperties.Hint="Tamamlanan görevleri temizler" />
+                </Grid>
+
+                <CollectionView 
+                    x:Name="TasksCollection"
+                    ItemsSource="{Binding Tasks}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                                BackgroundColor="White"
+                                Stroke="{Binding PriorityColor}"
+                                StrokeThickness="3"
+                                StrokeShape="RoundRectangle 12,12,12,12"
+                                Padding="15"
+                                Margin="0,0,0,10">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto">
+                                    <!-- CheckBox - Von Restorff Effect -->
+                                    <CheckBox 
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        IsChecked="{Binding IsCompleted}"
+                                        Color="#2196F3"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,15,0"
+                                        CheckedChanged="OnTaskCheckedChanged" />
+                                    
+                                    <!-- Task Info -->
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5">
+                                        <Label 
+                                            Text="{Binding Title}"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            TextColor="{Binding TextColor}"
+                                            TextDecorations="{Binding TextDecoration}" />
+                                        <Label 
+                                            Text="{Binding Description}"
+                                            FontSize="13"
+                                            TextColor="#666"
+                                            IsVisible="{Binding HasDescription}"
+                                            LineBreakMode="WordWrap" />
+                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                            <Label 
+                                                Grid.Column="0"
+                                                Text="{Binding Priority, StringFormat='Öncelik: {0}'}"
+                                                FontSize="11"
+                                                TextColor="{Binding PriorityColor}"
+                                                FontAttributes="Bold" />
+                                            <Label 
+                                                Grid.Column="2"
+                                                Text="{Binding Timestamp, StringFormat='{0:dd MMM HH:mm}'}"
+                                                FontSize="11"
+                                                TextColor="#999" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                    
+                                    <!-- Priority Badge - Gestalt Principles (Visual grouping) -->
+                                    <Border 
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        BackgroundColor="{Binding PriorityColor}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 15,15,15,15"
+                                        Padding="8,4"
+                                        Margin="10,0"
+                                        VerticalOptions="Center">
+                                        <Label 
+                                            Text="{Binding Priority}"
+                                            FontSize="10"
+                                            FontAttributes="Bold"
+                                            TextColor="White"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                    
+                                    <!-- Delete Button - Fitts's Law -->
+                                    <Button 
+                                        Grid.Row="0"
+                                        Grid.Column="3"
+                                        Text="🗑️"
+                                        BackgroundColor="Transparent"
+                                        FontSize="20"
+                                        WidthRequest="50"
+                                        HeightRequest="50"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTaskCommand}"
+                                        CommandParameter="{Binding .}"
+                                        SemanticProperties.Hint="Görevi sil" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout 
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="20"
+                            Margin="0,50">
+                            <Label 
+                                Text="📝"
+                                FontSize="60"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Henüz görev eklenmedi"
+                                FontSize="16"
+                                TextColor="#999"
+                                HorizontalOptions="Center" />
+                            <Label 
+                                Text="Yukarıdan yeni görev ekleyebilirsiniz"
+                                FontSize="14"
+                                TextColor="#BBB"
+                                HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Statistics - Doherty Threshold (Immediate feedback) -->
+            <Border 
+                BackgroundColor="#F5F5F5"
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12,12,12,12"
+                Padding="15"
+                Margin="0,20,0,0">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="📊 Görev İstatistikleri"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="#333"
+                        SemanticProperties.HeadingLevel="Level3" />
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+                        <Border 
+                            Grid.Row="0" Grid.Column="0"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding TotalTasks, StringFormat='Toplam: {0}'}"
+                                FontSize="14"
+                                TextColor="#333"
+                                HorizontalOptions="Center" />
+                        </Border>
+                        <Border 
+                            Grid.Row="0" Grid.Column="1"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding CompletedTasks, StringFormat='Tamamlanan: {0}'}"
+                                FontSize="14"
+                                TextColor="#4CAF50"
+                                HorizontalOptions="Center" />
+                        </Border>
+                        <Border 
+                            Grid.Row="1" Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            BackgroundColor="White"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 8,8,8,8">
+                            <Label 
+                                Text="{Binding CompletionRate, StringFormat='Tamamlanma Oranı: {0}%'}"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                TextColor="#2196F3"
+                                HorizontalOptions="Center" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

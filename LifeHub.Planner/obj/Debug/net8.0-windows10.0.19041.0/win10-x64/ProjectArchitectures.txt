@@ -1,0 +1,1 @@
+C:\Users\lenovo\source\repos\win_prog\LifeHub.Planner\LifeHub.Planner.csproj;x64
